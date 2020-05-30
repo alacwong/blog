@@ -10,47 +10,71 @@ export default class Login extends Component{
         this.passwordChange = this.passwordChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.create = this.create.bind(this);
+        this.createAccount = this.createAccount.bind(this);
+        this.createFirstChange = this.createFirstChange.bind(this);
+        this.createLastnameChange = this.createLastnameChange.bind(this);
+        this.createPass2Change = this.createPass2Change.bind(this);
+        this.createPassChange = this.createPassChange.bind(this);
+        this.createUserChange = this.createUserChange.bind(this);
         this.state  = {
-            username: "",
-            password: "",
+
+            userAuth: {
+                username: "",
+                password: "" 
+            },
+            
+            user: {
+                username: "",
+                password: "",
+                password2: "",
+                firstname: "",
+                lastname: "",
+            },
+
             render_acc: true
         }
     }
 
+    /**
+     * State to render create account or login
+     */
     create(){
-        console.log("leo is an incel")
         this.setState(state => {
             return {render_acc: !state.render_acc}
         })
     }
 
+    /**
+     * Follow methods for updating login details
+     * @param {*} event 
+     */
+
+     
     usernameChange(event){
-        console.log("user");
+        const newUserAuth = {...this.state.userAuth};
+        newUserAuth.username = event.target.value;
         this.setState({
-            username: event.target.value
+            userAuth: newUserAuth
         })
     }
 
     passwordChange(event){
-        console.log("pass");
+        const newUserAuth = {...this.state.userAuth};
+        newUserAuth.password = event.target.value;
         this.setState({
-            password: event.target.value
+            userAuth: newUserAuth
         })
     }
 
+    /**
+     * Authenticate User
+     * @param {} event 
+     */
     onSubmit(event){
-        const userDetails = {
-            username: this.state.username,
-            password: this.state.password
-        }
 
         let userAccount;
-        console.log(userDetails)
         axios.get('http://localhost:5000/auth', {
-            params:{
-                username: this.state.username,
-                password: this.state.password
-            }
+            params: this.state.userAuth
         })
         .then(res =>  {
            userAccount = res.data;
@@ -59,6 +83,65 @@ export default class Login extends Component{
 
         event.stopPropagation();
         event.preventDefault();
+    }
+
+    /**
+     * Method for account creation
+     * @param {} event 
+     */
+    createAccount(event){
+        event.stopPropagation();
+        event.preventDefault();
+
+        console.log(this.state.user)
+        // axios.post('http://localhost:5000/add', this.state.user)
+        //     .then(res =>console.log(res));
+    }
+
+
+    /**
+     * Following methods for updating account creaiton details
+     * @param {} event 
+     */
+    createUserChange(event){
+        console.log(this === undefined)
+        const newuser = {...this.state.user}
+        newuser.username = event.target.value;
+        this.setState({
+            user: newuser
+        });
+    }
+
+    createPassChange(event){
+        const newuser = {...this.state.user}
+        newuser.pass = event.target.value;
+        this.setState({
+            user: newuser
+        });
+    }
+
+    createPass2Change(event){
+        const newuser = {...this.state.user}
+        newuser.pass2 = event.target.value;
+        this.setState({
+            user: newuser
+        });
+    }
+
+    createFirstChange(event){
+        const newuser = {...this.state.user}
+        newuser.firstname = event.target.value;
+        this.setState({
+            user: newuser
+        });
+    }
+
+    createLastnameChange(event){
+        const newuser = {...this.state.user}
+        newuser.lastname = event.target.value;
+        this.setState({
+            user: newuser
+        });
     }
 
     render(){
@@ -70,11 +153,17 @@ export default class Login extends Component{
                     user={this.usernameChange} 
                     pass={this.passwordChange}
                     submit={this.onSubmit}
-                    create={this.create}/> :
-                    <CreateAccount/>
+                    create={this.create}
+                    /> :
+                    <CreateAccount
+                    user={this.createUserChange}
+                    pass={this.createPassChange}
+                    pass2={this.createPass2Change}
+                    firstname={this.createFirstChange}
+                    lastname={this.createLastnameChange}
+                    submit={this.createAccount}
+                    />
                 }
-
-
             </div>
             
         );
