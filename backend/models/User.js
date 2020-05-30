@@ -33,7 +33,12 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
     trim: true
-}
+}, 
+
+profile: String,
+blog: [
+  
+]
 
 }, {
   timestamps: true,
