@@ -7,41 +7,50 @@ export default class LoginBox extends Component{
 
     render(){
         return (
-            <form  className="form-group mid-container" onSubmit={this.props.submit}>
+            <form  className="form-group mid-container" onSubmit={this.props.submit} >
             <label>Username</label>
             <input 
                 type="text" 
-                className="form-control"/>
+                className="form-control"
+                onChange={this.props.user}
+                />
 
             <label>Password</label>
              <input 
                 type="text" 
-                className="form-control password"/>
+                className="form-control password"
+                onChange={this.props.pass}
+                />
+
 			 <label>Re-enter your password</label>
             <input 
                 type="text" 
-                className="form-control"/> 
+                className="form-control"
+                onChange={this.props.pass2}
+            />
+
             <label>First Name</label>
              <input 
                 type="text" 
-                className="form-control password"/>
-				<label>Last Name</label>
+                className="form-control password"
+                onChange={this.props.firstname}
+                />
+
+			<label>Last Name</label>
              <input 
                 type="text" 
-                className="form-control password"/>
+                className="form-control password"
+                onChange={this.props.lastname}
+                />
             
             <div>
-            <input 
-                type="submit" 
-                value="Sign in" 
-                className="btn btn-primary button-style" 
+                <input 
+                    type="submit" 
+                    value="Create Account" 
+                    className="btn btn-primary button-style" 
                  />
             </div>
             
-            <button 
-                className="btn btn-primary button-style" 
-                onClick={this.props.create}> 
-                Create Account</button>
             </form> 
         )
     }
