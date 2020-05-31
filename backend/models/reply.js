@@ -4,8 +4,26 @@
 
 const mongoose = require('mongoose');
 
+let Comment  = require("../models/comment");
+function validateId (id){
+    Comment.findById(id)
+        .then(blog => true)
+        .catch (err => false);
+}
+
+let User = require("../models/User");
+
+function validateUser(userId){
+    User.findById(userId)
+        .then(user => true)
+        .catch(err => false);
+}
+
 const replySchema = new mongoose.Schema({
-    user: String, 
+    user: {
+        type: String,
+        validate: [validateUser, "User not found"]
+    } ,
 
     body: {
         type: String,
@@ -17,7 +35,12 @@ const replySchema = new mongoose.Schema({
         type: Number, 
         required: true
     },
-    comment: String
+
+    comment: {
+        type: String,
+        validate: [validateId, "Comment not found"]
+    }
+    
 }, {
    timestamps: true 
 });

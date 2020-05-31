@@ -3,9 +3,26 @@
  */
 
 const mongoose = require('mongoose');
+let Blog  = require("../models/blog");
+let User = require("../models/User");
+
+function validateUser(userId){
+    User.findById(userId)
+        .then(user => true)
+        .catch(err => false);
+}
+
+function validateBlog (id){
+    Blog.findById(id)
+        .then(blog => true)
+        .catch (err => false);
+}
 
 const commentSchema = new mongoose.Schema({
-    user: String, 
+    user: {
+        type: String,
+        validate: [validateUser, "User not found"]
+    } ,
 
     body: {
         type: String,
@@ -18,23 +35,11 @@ const commentSchema = new mongoose.Schema({
         required: true
     },
 
-    replies: [
-        {
-            user: String, 
-        
-            body: {
-                type: String,
-                required: true,
-                trim: true
-            },
-        
-            likes: {
-                type: Number, 
-                required: true
-            }
-        }
-    ],
-    blog: String
+    replies: [String],
+    blog: {
+        type: String,
+        validate: [validateBlog, "Blog not found"]
+    }
 }, {
    timestamps: true 
 });

@@ -4,8 +4,19 @@
 
 const mongoose = require('mongoose');
 
+let User = require("../models/User");
+
+function validateUser(userId){
+    User.findById(userId)
+        .then(user => true)
+        .catch(err => false);
+}
+
 const commentSchema = new mongoose.Schema({
-    user: String, 
+    user: {
+        type: String,
+        validate: [validateUser, "User not found"]
+    } ,
 
     body: {
         type: String,
@@ -26,39 +37,7 @@ const commentSchema = new mongoose.Schema({
         trim: true
     }, 
 
-    comments : [
-        {
-            user: String, 
-
-            body: {
-                type: String,
-                required: true,
-                trim: true
-            },
-        
-            likes: {
-                type: Number, 
-                required: true
-            },
-        
-            replies: [
-                {
-                    user: String, 
-                
-                    body: {
-                        type: String,
-                        required: true,
-                        trim: true
-                    },
-                
-                    likes: {
-                        type: Number, 
-                        required: true
-                    }
-                }
-            ]    
-        }
-    ]
+    comments : [String]
 }, {
    timestamps: true 
 });
