@@ -26,6 +26,10 @@ router.route("/blog").post((req, res) =>{
         comments: [],
         likes: 0
     }
+
+    newBlog.save()
+        .then(blog => updateUser(blog.user, blog._id))
+        .catch(err => console.log(`Error ${err}`));
 });
 
 
@@ -53,7 +57,7 @@ router.route("/reply").post((req, res) =>{
     }
 
     newReply.save()
-        .then(reply => updateBlog(reply.comment, reply._id))
+        .then(reply => updateComment(reply.comment, reply._id))
         .catch(err => console.log(`Error ${err}`));
 
 });

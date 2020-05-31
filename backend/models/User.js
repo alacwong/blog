@@ -36,9 +36,7 @@ const userSchema = new mongoose.Schema({
 }, 
 
 profile: String,
-blog: [
-  
-]
+blogs: [String]
 
 }, {
   timestamps: true,

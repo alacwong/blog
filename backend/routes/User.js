@@ -8,7 +8,9 @@ router.route("/add").post((req, res) =>{
         username: req.body.username,
         password: req.body.password, 
         firstname: req.body.firstname,
-        lastname: req.body.lastname
+        lastname: req.body.lastname,
+        profile: "DEFAULT STRING",
+        blogs: []
     })   
    
     newUser.save()
