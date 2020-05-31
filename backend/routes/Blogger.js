@@ -5,61 +5,88 @@ const Comment = require("../models/comment");
 
 const updateUser = (userId, blogId) =>{
     User.findById(userId)
-        .then(user => user.blogs.push(blogId));
+        .then(user => {
+            user.blogs.push(blogId)
+            user.save();
+            console.log('User has been saved')
+        });
 }
 
 const updateBlog = (blogId, commentId) =>{
     Blog.findById(blogId)
-        .then(blog => blog.comments.push(commentId));
+        .then(blog => {
+            blog.comments.push(commentId)
+            blog.save()
+            console.log("Blog has been saved")
+        });
 }
 
 const updateComment = (commentId, replyId) => {
     Comment.findById(commentId)
-        .then(comment => comment.replies.push(replyId));
+        .then(comment => {
+            comment.replies.push(replyId)
+            comment.save();
+            console.log("Comment has been save");
+        });
 }
 
+/**
+ * Post request start
+ */
+
 router.route("/blog").post((req, res) =>{
-    const newBlog = {
+    console.log("attempting to blog...")
+    console.log()
+    const newBlog = new Blog({
         user: req.body.user,
         body: req.body.user,
         title: req.body.user,
         comments: [],
         likes: 0
-    }
+    });
 
     newBlog.save()
-        .then(blog => updateUser(blog.user, blog._id))
-        .catch(err => console.log(`Error ${err}`));
+        .then(blog => {
+            updateUser(blog.user, blog._id)
+            res.json("Blog added");
+        })
+        .catch(err => res.status(400).json(`Error: ${err}`));
 });
 
 
 router.route("/comment").post((req, res) =>{
-    const newComment = {
+    const newComment = new Comment({
         user: req.body.user,
         body: req.body.user,
         blog: req.blog._id, 
         replies: [],
         likes: 0
-    }
+    });
 
     newComment.save()
-        .then(comment => updateBlog(comment.blog, comment._id))
-        .catch(err => console.log(`Error ${err}`));
+        .then(comment =>{
+            updateBlog(comment.blog, comment._id);
+            res.json("Comment added!");
+        })
+        .catch(err => res.status(400).json(`Error: ${err}`));
 
 });
 
 router.route("/reply").post((req, res) =>{
-    const newReply= {
+    const newReply= new Reply( {
         user: req.body.user,
         body: req.body.user,
         comment: req.body.comment,
         likes: 0
-    }
+    });
 
     newReply.save()
-        .then(reply => updateComment(reply.comment, reply._id))
-        .catch(err => console.log(`Error ${err}`));
-
+        .then(reply => {
+            updateComment(reply.comment, reply._id);
+            res.json("Added reply");
+        })
+        .catch(err => res.status(400).json(`Error: ${err}`));
 });
+
 
 module.exports = router;

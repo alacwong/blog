@@ -9,7 +9,7 @@ router.route("/add").post((req, res) =>{
         password: req.body.password, 
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        profile: "DEFAULT STRING",
+        profile: "../../profile/default.png",
         blogs: []
     })   
    
@@ -38,4 +38,21 @@ router.route("/auth").get((req, res) =>{
     // console.log(res);
 })
 
+router.route("/get").get((req, res) =>{
+    const users = []
+    User.find({})
+        .then( users => {
+            res.json(users);
+            for (const user of users){
+                console.log(user.username)
+                for (const blog of users.blogs){
+                    console.log(blog)
+                }
+            }
+        })
+    
+
+});
 module.exports = router;
+
+router.route
