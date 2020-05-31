@@ -31,7 +31,8 @@ export default class Login extends Component{
                 lastname: "",
             },
 
-            render_acc: true
+            render_acc: true,
+            render_dialog: false
         }
     }
 
@@ -92,10 +93,19 @@ export default class Login extends Component{
     createAccount(event){
         event.stopPropagation();
         event.preventDefault();
+        
+        //verify passswords are the same
+        if (this.state.user.password === this.state.user.password2){
 
-        console.log(this.state.user)
-        // axios.post('http://localhost:5000/add', this.state.user)
-        //     .then(res =>console.log(res));
+            const user = this.state.user
+            delete user.password2
+            axios.post('http://localhost:5000/add', this.state.user)
+            .then(res =>console.log(res));
+        } else{
+            this.setState({
+                render_dialog: true
+            });
+        }
     }
 
 
@@ -104,7 +114,6 @@ export default class Login extends Component{
      * @param {} event 
      */
     createUserChange(event){
-        console.log(this === undefined)
         const newuser = {...this.state.user}
         newuser.username = event.target.value;
         this.setState({
@@ -114,7 +123,7 @@ export default class Login extends Component{
 
     createPassChange(event){
         const newuser = {...this.state.user}
-        newuser.pass = event.target.value;
+        newuser.password = event.target.value;
         this.setState({
             user: newuser
         });
@@ -122,7 +131,7 @@ export default class Login extends Component{
 
     createPass2Change(event){
         const newuser = {...this.state.user}
-        newuser.pass2 = event.target.value;
+        newuser.password2 = event.target.value;
         this.setState({
             user: newuser
         });
@@ -163,6 +172,11 @@ export default class Login extends Component{
                     lastname={this.createLastnameChange}
                     submit={this.createAccount}
                     />
+                }
+
+                {
+                    this.state.render_dialog && 
+                        <p style={{color: "red"}}>* Passwords are not matching</p>
                 }
             </div>
             
