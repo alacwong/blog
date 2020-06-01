@@ -16,13 +16,13 @@ export default class LoginBox extends Component{
                 />
 
             <label>Password</label>
-             <input 
+            <input 
                 type="text" 
                 className="form-control password"
                 onChange={this.props.pass}
                 />
 
-			 <label>Re-enter your password</label>
+			<label>Re-enter your password</label>
             <input 
                 type="text" 
                 className="form-control password"
@@ -30,14 +30,14 @@ export default class LoginBox extends Component{
             />
 
             <label>First Name</label>
-             <input 
+            <input 
                 type="text" 
                 className="form-control"
                 onChange={this.props.firstname}
                 />
 
 			<label>Last Name</label>
-             <input 
+            <input 
                 type="text" 
                 className="form-control"
                 onChange={this.props.lastname}
