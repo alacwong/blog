@@ -1,4 +1,4 @@
-import React, {Component}  from "react";
+import React, {Component}from "react";
 import LoginBox from "./SignIn"
 import CreateAccount from "./CreateAccount";
 import axios from 'axios';
@@ -32,7 +32,7 @@ export default class Login extends Component{
             },
 
             render_acc: true,
-            render_dialog: false
+            render_dialog: false,
         }
     }
 
@@ -79,11 +79,18 @@ export default class Login extends Component{
         })
         .then(res =>  {
            userAccount = res.data;
-           console.log(userAccount);
-           console.log(res)})
+           this.props.history.push( {
+               pathname: "/user/" + res.data.username,
+               state: res.data
+           });
+        })
+        .catch(err => {
+            console.log(`Error: ${err}`);
+        })
 
         event.stopPropagation();
         event.preventDefault();
+
     }
 
     /**
@@ -91,21 +98,31 @@ export default class Login extends Component{
      * @param {} event 
      */
     createAccount(event){
-        event.stopPropagation();
-        event.preventDefault();
-        
+
         //verify passswords are the same
         if (this.state.user.password === this.state.user.password2){
-
+            
+            
             const user = this.state.user
             delete user.password2
-            axios.post('http://localhost:5000/add', this.state.user)
-            .then(res =>console.log(res));
+            axios.post('http://localhost:5000/add', user)
+                .then(res =>{
+                    this.props.history.push("/user/" + res.data.username, {
+                        state: res.data
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
         } else{
             this.setState({
                 render_dialog: true
             });
         }
+
+        event.stopPropagation();
+        event.preventDefault();
     }
 
 
@@ -171,6 +188,7 @@ export default class Login extends Component{
                     firstname={this.createFirstChange}
                     lastname={this.createLastnameChange}
                     submit={this.createAccount}
+                    url={this.state.url}
                     />
                 }
 

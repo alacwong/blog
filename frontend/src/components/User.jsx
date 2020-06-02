@@ -15,9 +15,11 @@ export default class User extends Component {
         super(props);
         this.handleClose = this.handleClose.bind(this);
         this.handleShow = this.handleShow.bind(this);
-        this.state = {
-            show: false
-        }
+        console.log("nigger");
+        console.log(this.props.location.state);
+        this.state = {...this.props.location.state}
+        this.state.show = false;
+        
         
     }
 
