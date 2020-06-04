@@ -20,9 +20,11 @@ connection.once('open', () => {
 
 const userRouter = require('./routes/User');
 const blogRouter = require('./routes/Blogger');
+const getRouter = require('./routes/Get');
 
 app.use("", userRouter);
 app.use("/blogger", blogRouter);
+app.use("/get", getRouter);
 
 
 app.listen(port, () => {

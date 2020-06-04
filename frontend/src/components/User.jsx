@@ -9,36 +9,61 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Popup from "reactjs-popup";
 import Modal from 'react-bootstrap/Modal'
+import Bio from '../components/Bio'
+import axios from 'axios';
 
 export default class User extends Component {
     constructor(props){
         super(props);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleShow = this.handleShow.bind(this);
-        console.log("nigger");
-        console.log(this.props.location.state);
-        this.state = {...this.props.location.state}
-        this.state.show = false;
-        
-        
+        this.state = {...this.props.location.state};
+        this.state.blogData = {}
+        this.getBlog = this.getBlog.bind(this);
+
+        const loading = {
+            user: "loading...",
+            body: "loading...",
+            likes: 0,
+            title: "loading",
+            comments: []
+        }
+
+        this.state.blogs.map(blog => {
+
+            //to prevent crashes
+            this.state.blogData[blog] = loading;
+            axios.get('http://localhost:5000/get/blog', {"_id": blog})
+                .then(res => {
+                    const newBlog = {...this.state.blogData}
+                    newBlog[res.data._id] = res.data;
+                    this.setState({
+                        blogData: newBlog
+                    })
+                })
+        }
+
+        )
     }
 
-
-    handleClose(){
-        this.setState({
-            show:false
-        })
-    }
-
-    handleShow(){
-       this.setState({
-           show:true
-       })
-    }
-
+    getBlog(blog){
+            return (
+                <Card style={{ width: '18rem', margin: "auto"}}>
+                    <Card.Body>
+                        <Card.Title>{this.state.blogData[blog].title}</Card.Title>
+                        <Card.Text>
+                            {this.state.blogData[blog].body}
+                        </Card.Text>
+                        <Card.Link href="#">View Blog</Card.Link>
+                        <Card.Link href="#">View User</Card.Link>
+                    </Card.Body>
+                </Card>
+                )
+            
+    }   
 
 
     render(){
+
+          
 
 
         return (
@@ -46,67 +71,16 @@ export default class User extends Component {
                 <Nav/>
                  {/* <Link to="/">Login</Link> */}
 
-                <div>
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Creating a new Blog</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div className="form-group">
-                                <label>Enter Blog title</label>
-                                <input type='text' className="form-control"></input>
-                                <input type='text' className="form-control"></input>                                
-                            </div>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={this.handleClose}>
-                                Close
-                            </Button>
-                            <Button variant="primary" onClick={this.handleClose}>
-                                Blog it!
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                </div>
+                <Bio 
+                    firstname={this.state.firstname}
+                    lastname={this.state.lastname}
+                    handleShow={this.handleShow}
+                />
                 
-                 <Card style={
-                     {
-                        width: '27rem', 
-                        margin: "auto", 
-                        marginBottom: "5%",
-                        marginTop: "2%"
-                    }
-                }>
-                    <Card.Body>
-                        <Card.Title>Alac wong</Card.Title>
-                        <Card.Text>
-                            Welcome to my blog page!
-                        </Card.Text>
-                        <div>
-                        <img 
-                            src= {require("./profile/default.png")} 
-                            className="img-thumbnail" 
-                            style={{width:100, height:100}}
-                        />
-                        </div>
-                
-                    </Card.Body>
-                    <div>
-                        <Button variant="primary button-style" onClick={this.handleShow}>Blog it!</Button>
-                    </div>
-                </Card>
 
-
-                 <Card style={{ width: '18rem', margin: "auto"}}>
-                    <Card.Body>
-                        <Card.Title>Blog title</Card.Title>
-                        <Card.Text>
-                            Hello world
-                        </Card.Text>
-                        <Card.Link href="#">View Blog</Card.Link>
-                        <Card.Link href="#">View User</Card.Link>
-                    </Card.Body>
-                </Card>
+                {
+                    this.state.blogs.map( this.getBlog)
+                }
 
             </div>
             
