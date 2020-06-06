@@ -5,6 +5,7 @@ import Login from "./components/login"
 import User from "./components/User"
 import "bootstrap/dist/css/bootstrap.min.css"
 import history from './history';
+import List from './components/List';
 import { BrowserRouter  as Router, Route} from 'react-router-dom'
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
     <Router>
         <Route path="/" exact component={Login} history={history}/>
         <Route path="/user/:id" component={User}/>
+        <Route path="/list" component={List}/>
     </Router>
   )
 }

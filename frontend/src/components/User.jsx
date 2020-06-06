@@ -15,7 +15,8 @@ import axios from 'axios';
 export default class User extends Component {
     constructor(props){
         super(props);
-        this.state = {...this.props.location.state};
+        console.log(this.props);
+        this.state = {...this.props.location.state};    //user page
         this.state.blogData = {}
 
         const loading = {
@@ -47,23 +48,7 @@ export default class User extends Component {
 
 
 
-    render(){
-
-
-        const getBlog = (blog, key) =>{
-            return (
-                <Card style={{ width: '18rem', margin: "auto"}} key = {key}>
-                    <Card.Body>
-                        <Card.Title>{this.state.blogData[blog].title}</Card.Title>
-                        <Card.Text>
-                            {this.state.blogData[blog].body}
-                        </Card.Text>
-                        <Card.Link href="#">View Blog</Card.Link>
-                        <Card.Link href="#">View User</Card.Link>
-                    </Card.Body>
-                </Card>
-            );
-    }   
+    render(){  
 
         return (
             <div >   
