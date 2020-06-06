@@ -45,7 +45,7 @@ router.route("/get").get((req, res) =>{
             res.json(users);
             for (const user of users){
                 console.log(user.username)
-                for (const blog of users.blogs){
+                for (const blog of user.blogs){
                     console.log(blog)
                 }
             }

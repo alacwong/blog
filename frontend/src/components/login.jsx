@@ -101,8 +101,6 @@ export default class Login extends Component{
 
         //verify passswords are the same
         if (this.state.user.password === this.state.user.password2){
-            
-            
             const user = this.state.user
             delete user.password2
             axios.post('http://localhost:5000/add', user)

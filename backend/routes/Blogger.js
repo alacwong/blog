@@ -39,8 +39,8 @@ router.route("/blog").post((req, res) =>{
     console.log()
     const newBlog = new Blog({
         user: req.body.user,
-        body: req.body.user,
-        title: req.body.user,
+        body: req.body.body,
+        title: req.body.title,
         comments: [],
         likes: 0
     });
@@ -57,7 +57,7 @@ router.route("/blog").post((req, res) =>{
 router.route("/comment").post((req, res) =>{
     const newComment = new Comment({
         user: req.body.user,
-        body: req.body.user,
+        body: req.body.body,
         blog: req.blog._id, 
         replies: [],
         likes: 0
@@ -75,7 +75,7 @@ router.route("/comment").post((req, res) =>{
 router.route("/reply").post((req, res) =>{
     const newReply= new Reply( {
         user: req.body.user,
-        body: req.body.user,
+        body: req.body.body,
         comment: req.body.comment,
         likes: 0
     });
