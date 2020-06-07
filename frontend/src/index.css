@@ -84,3 +84,19 @@ code {
 }
 
 
+.upload {
+  text-align: center;
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+
+}
+
+.flex {
+  margin: 1em;
+  margin-right: 1em;
+  margin-bottom:  0em;
+  display: flex;
+
+}
+

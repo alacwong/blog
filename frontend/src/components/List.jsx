@@ -42,7 +42,9 @@ export default class List extends Component{
                                      margin: "auto", 
                                     marginBottom: 20
                                 }
-                            }>
+                        
+                            }
+                            key = {this.state.users.indexOf(user)}>
                                 <Card.Body>
                                      <img 
                                         src= {require("./profile/default.png")} 

@@ -25,7 +25,7 @@ export default class Navbar extends Component {
             <Link to={{pathname: '/list', state: {nWord: "nigger"}}} className="nav-link" >User list</Link>
             </li>
             <li className="navbar-item">  
-            <Link to="/Home" className="nav-link">Recent Blogs</Link>
+            <Link to="/blogs" className="nav-link">Recent Blogs</Link>
             </li>
           </ul>
           </div>

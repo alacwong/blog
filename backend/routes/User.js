@@ -38,6 +38,9 @@ router.route("/auth").get((req, res) =>{
     // console.log(res);
 })
 
+
+
+
 router.route("/get").get((req, res) =>{
     const users = []
     User.find({})

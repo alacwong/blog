@@ -4,10 +4,27 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class Bio extends Component{
     constructor(props){
         super(props)
+        this.uploadFile = this.uploadFile.bind(this);
+        this.browseFile = this.browseFile.bind(this);
+        this.state = {
+          file: null
+        }
+    }
+
+    uploadFile(){
+        
+    }
+
+    browseFile(e){
+      console.log(e.target.files);
+      this.setState({
+        file: e.target.files[0]
+      });
     }
 
     render(){
@@ -104,10 +121,18 @@ export default class Bio extends Component{
                     style={{width:100, height:100, borderRadius: "100%"}}
                 />
                 </div>
+
+                <div className="flex">
+                      <input type="file" className="upload" onChange={this.browseFile}></input>
+                      <Button variant="primary" onChange={this.uploadFile}>
+                          Upload
+                        </Button>
+                  </div>
             </Card.Body>
             <div>
                 <Example user={this.props.user}/>
             </div>
+
             </Card>
         )
         
