@@ -17,14 +17,24 @@ export default class Bio extends Component{
     }
 
     uploadFile(){
-        
+      console.log(this.state.file);
+
+      let fd = new FormData();
+      fd.append("image", this.state.file);
+      fd.append('user', this.props.user);
+      axios.post('http://localhost:5000/save/profile', fd, {headers:{'Content-Type': 'multipart/form-data'}})
+        .then(res => {
+          console.log(res);
+        }).catch( res => {
+          console.log(res);
+        });
     }
 
     browseFile(e){
-      console.log(e.target.files);
       this.setState({
         file: e.target.files[0]
       });
+      console.log(e.target.files);
     }
 
     render(){
@@ -106,40 +116,32 @@ export default class Bio extends Component{
                 }
             }>
             <Card.Body>
-                <Card.Title>{
-                    this.props.firstname
-                    + " " + 
-                    this.props.lastname} 
-                </Card.Title>
-                <Card.Text>
-                    Welcome to my blog page!
-                </Card.Text>
+                <Card.Title>{this.props.firstname + " " + this.props.lastname}</Card.Title>
+                <Card.Text>Welcome to my blog page!</Card.Text>
                 <div>
-                <img 
-                    src= {require("./profile/default.png")} 
-                    className="img-thumbnail" 
-                    style={{width:100, height:100, borderRadius: "100%"}}
-                />
+                  <img 
+                      src= {require("./profile/default.png")} 
+                      className="img-thumbnail" 
+                      style={{width:100, height:100, borderRadius: "100%"}}
+                  />
                 </div>
-
                 <div className="flex">
-                      <input type="file" className="upload" onChange={this.browseFile}></input>
-                      <Button variant="primary" onChange={this.uploadFile}>
-                          Upload
-                        </Button>
-                  </div>
+                    <input type="file" 
+                      name="avatar"
+                      className="upload"
+                      onChange={this.browseFile}>
+                    </input>
+                    <Button variant="primary" onClick={this.uploadFile}>
+                      Upload
+                    </Button>
+                </div>
             </Card.Body>
             <div>
                 <Example user={this.props.user}/>
             </div>
-
             </Card>
         )
-        
     }
 }
-
-
-
 
 

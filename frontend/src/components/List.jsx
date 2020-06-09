@@ -30,7 +30,6 @@ export default class List extends Component{
         return (
             <div>
                 <Nav/>
-                <h1>Hello World</h1>
 
                 {
                     this.state.users.map(
