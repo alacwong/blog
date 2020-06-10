@@ -1,11 +1,14 @@
 const router = require("express").Router();
 const multer = require('multer');
-
+const path = require('path');
+let User  = require("../models/User");
+let newFile;
 
 const storage = multer.diskStorage({
-    destination: "../../frontend/src/components/profile/",
+    destination: "../frontend/src/components/profile/",
     filename: function(req, file, cb){
-       cb(null,"IMAGE-" + Date.now());
+         newFile = "IMAGE-" + Date.now() + path.extname(file.originalname)
+       cb(null,newFile);
     }
  });
  
@@ -18,10 +21,16 @@ const storage = multer.diskStorage({
          res.json(err);
       }
       console.log(req.file);
-      res.json("success")
+      //upload link to monogdb
+      User.findById(req.body.user)
+         .then(user => {
+            user.profile = './profile/' +  newFile;
+            user.save()
+               .then(() => res.json("success"))
+               .catch((err) => res.json(`failure ${err}`));
+         })
    })
- })
-
+ });
 
 
 module.exports = router;

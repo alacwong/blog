@@ -8,10 +8,11 @@ export default class List extends Component{
     constructor(props){
         super(props);
         this.state = {
-            user: props.location.state,
+            loginas: props.location.state.loginas,
             blogs_user: [],
         }
         
+        console.log(this.state);
 
         //get users and blogs
         axios.get('http://localhost:5000/get/blogs')
@@ -29,13 +30,12 @@ export default class List extends Component{
 
         return (
             <div>
-                <Nav/>
+               <Nav loginas={this.state.loginas}/>
 
                 {
                     this.state.blogs_user.map(
                         blogs_user => {
                             let [blog, user] = blogs_user
-                            console.log(user);
                             return (
 
                                 <Card style={
@@ -63,7 +63,7 @@ export default class List extends Component{
                                         <Link  to={
                                             {
                                                 pathname: `/user/${user.username}`,
-                                                state: user
+                                                state: {user:user, loginas: this.state.loginas}
                                             }
                                         }>
                                         User Profile

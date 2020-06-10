@@ -12,7 +12,7 @@ export default class Bio extends Component{
         this.uploadFile = this.uploadFile.bind(this);
         this.browseFile = this.browseFile.bind(this);
         this.state = {
-          file: null
+            file: null
         }
     }
 
@@ -70,36 +70,30 @@ export default class Bio extends Component{
           
             return (
               <>
-                <Button variant="primary button-style" onClick={handleShow}>
-                  Blog it!
-                </Button>
+                <Button variant="primary button-style" onClick={handleShow}>Blog it!</Button>
                 <Modal show={show} onHide={handleClose}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Form>
-                      <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label>Blog Title</Form.Label>
-                        <Form.Control
-                           type="text" placeholder="Title"
-                            value = {title} onChange={handleTitle}/>
-                      </Form.Group>
-                      <Form.Group controlId="exampleForm.ControlTextarea1">
-                        <Form.Control 
-                          as="textarea" rows="10" 
-                          value={body} onChange={handleBody}/>
-                        </Form.Group>
-                    </Form>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                      Close
-                    </Button>
-                    <Button variant="primary" onClick={submit}>
-                      Save Changes
-                    </Button>
-                  </Modal.Footer>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Create new Blog</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group controlId="exampleForm.ControlInput1">
+                                <Form.Label>Blog Title</Form.Label>
+                                <Form.Control
+                                    type="text" placeholder="Title"
+                                    value = {title} onChange={handleTitle}/>
+                            </Form.Group>
+                            <Form.Group controlId="exampleForm.ControlTextarea1">
+                                <Form.Control 
+                                    as="textarea" rows="10" 
+                                    value={body} onChange={handleBody}/>
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    <Button variant="primary" onClick={submit}>Save Changes</Button>
+                    </Modal.Footer>
                 </Modal>
               </>
             );
@@ -120,28 +114,29 @@ export default class Bio extends Component{
                 <Card.Text>Welcome to my blog page!</Card.Text>
                 <div>
                   <img 
-                      src= {require("./profile/default.png")} 
-                      className="img-thumbnail" 
-                      style={{width:100, height:100, borderRadius: "100%"}}
+                        src= {require("./profile/default.png")} 
+                        className="img-thumbnail" 
+                        style={{width:100, height:100, borderRadius: "100%"}}
                   />
                 </div>
-                <div className="flex">
-                    <input type="file" 
-                      name="avatar"
-                      className="upload"
-                      onChange={this.browseFile}>
-                    </input>
-                    <Button variant="primary" onClick={this.uploadFile}>
-                      Upload
-                    </Button>
-                </div>
+                {
+                    this.props.show &&
+                    <div className="flex">
+                        <input type="file" 
+                            className="upload"
+                            onChange={this.browseFile}>
+                        </input>
+                        <Button variant="primary" onClick={this.uploadFile}>Upload</Button>
+                    </div>
+                }
             </Card.Body>
-            <div>
-                <Example user={this.props.user}/>
-            </div>
+            {
+                this.props.show &&
+                <div>
+                    <Example user={this.props.user}/>
+                </div>              
+            }
             </Card>
         )
     }
 }
-
-

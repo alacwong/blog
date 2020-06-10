@@ -9,26 +9,55 @@ export default class Navbar extends Component {
     constructor(props){
       super(props);
 
-      this.state  = {
-        state: props.user
+      console.log('nav', this.props);
+
+      if (props.loginas){
+        this.state = {
+          loginas: props.loginas
+        }
+      } else {
+        this.state = {
+          loginas: props.location.state.loginas
+        }
       }
+
+      console.log(this.state);
     }
-
-
     render() {
       return (
         <nav className="navbar navbar-dark bg-dark navbar-expand-lg" style={{opacity: "85%"}}>
-          <Link to="/user" className="navbar-brand">Your profile</Link>
-          <div className="collpase navbar-collapse">
-          <ul className="navbar-nav mr-auto">
-            <li className="navbar-item">
-            <Link to={{pathname: '/list', state: {nWord: "nigger"}}} className="nav-link" >User list</Link>
-            </li>
-            <li className="navbar-item">  
-            <Link to="/blogs" className="nav-link">Recent Blogs</Link>
-            </li>
-          </ul>
-          </div>
+          <Link to=
+            {
+              {
+                pathname: `/user/${this.state.loginas.username}`, 
+                state: {user: this.state.loginas, loginas: this.state.loginas}
+              }
+            } 
+        className="navbar-brand">Your profile</Link>
+            <div className="collpase navbar-collapse">
+                <ul className="navbar-nav mr-auto">
+                    <li className="navbar-item">
+                        <Link to=
+                        {
+                            {
+                            pathname: '/list', 
+                            state: this.state
+                            }
+                        } 
+                        className="nav-link" >User list</Link>
+                    </li>
+                    <li className="navbar-item">  
+                        <Link to=
+                        {
+                        {
+                            pathname: '/blogs', 
+                            state: this.state
+                            }
+                        }              
+                        className="nav-link">Recent Blogs</Link>
+                    </li>
+                </ul>
+            </div>
         </nav>
       );
     }

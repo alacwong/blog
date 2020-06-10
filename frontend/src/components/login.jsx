@@ -31,6 +31,7 @@ export default class Login extends Component{
                 lastname: "",
             },
 
+
             render_acc: true,
             render_dialog: false,
         }
@@ -81,7 +82,7 @@ export default class Login extends Component{
            userAccount = res.data;
            this.props.history.push( {
                pathname: "/user/" + res.data.username,
-               state: res.data
+               state: {user: res.data, loginas: res.data}
            });
         })
         .catch(err => {
@@ -174,19 +175,19 @@ export default class Login extends Component{
                 {
                     this.state.render_acc ? 
                     <LoginBox
-                    user={this.usernameChange} 
-                    pass={this.passwordChange}
-                    submit={this.onSubmit}
-                    create={this.create}
+                        user={this.usernameChange} 
+                        pass={this.passwordChange}
+                        submit={this.onSubmit}
+                        create={this.create}
                     /> :
                     <CreateAccount
-                    user={this.createUserChange}
-                    pass={this.createPassChange}
-                    pass2={this.createPass2Change}
-                    firstname={this.createFirstChange}
-                    lastname={this.createLastnameChange}
-                    submit={this.createAccount}
-                    url={this.state.url}
+                        user={this.createUserChange}
+                        pass={this.createPassChange}
+                        pass2={this.createPass2Change}
+                        firstname={this.createFirstChange}
+                        lastname={this.createLastnameChange}
+                        submit={this.createAccount}
+                        url={this.state.url}
                     />
                 }
 

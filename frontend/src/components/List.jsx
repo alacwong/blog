@@ -8,11 +8,9 @@ export default class List extends Component{
     constructor(props){
         super(props);
         this.state = {
-            user: props.location.state,
+            loginas: props.location.state,
             users: []
         }
-        
-
         //get users
         axios.get('http://localhost:5000/get')
             .then( res => {
@@ -21,16 +19,11 @@ export default class List extends Component{
                     users: users
                 })
             })
-    
     }
-
     render(){
-
-
         return (
             <div>
-                <Nav/>
-
+                <Nav loginas={this.state.loginas}/>
                 {
                     this.state.users.map(
                         user => {
@@ -41,7 +34,6 @@ export default class List extends Component{
                                      margin: "auto", 
                                     marginBottom: 20
                                 }
-                        
                             }
                             key = {this.state.users.indexOf(user)}>
                                 <Card.Body>
@@ -57,7 +49,7 @@ export default class List extends Component{
                                     <Link  to={
                                             {
                                                 pathname: `/user/${user.username}`,
-                                                state: user
+                                                state: {user: user, loginas: this.state.loginas}
                                             }
                                         }>
                                         User Profile
@@ -69,7 +61,6 @@ export default class List extends Component{
                     )
                 }
             </div>
-
         );
     }
 }

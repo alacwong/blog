@@ -2,22 +2,18 @@
  * Load user details
  */
 
-import React, {Component,  SafeAreaView, ScrollView, StyleSheet}  from "react";
-import { Link } from 'react-router-dom';
+import React, {Component}  from "react";
 import Nav from '../components/nav'
 import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
-import Popup from "reactjs-popup";
-import Modal from 'react-bootstrap/Modal'   
 import Bio from '../components/Bio'
 import axios from 'axios';
 
 export default class User extends Component {
     constructor(props){
         super(props);
-        console.log(this.props);
         this.state = {...this.props.location.state};    //user page
         this.state.blogData = {}
+        console.log(this.state);
 
         const loading = {
             user: "loading...",
@@ -26,9 +22,8 @@ export default class User extends Component {
             title: "loading",
             comments: []
         }
-        console.log(this.state.blogs);
-        this.state.blogs.map(blog => {
-            console.log(blog, "nigga pls")
+        console.log(this.state.user.blogs);
+        this.state.user.blogs.map(blog => {
             //to prevent crashes
             this.state.blogData[blog] = loading;
             axios.get('http://localhost:5000/get/blog', {
@@ -46,24 +41,21 @@ export default class User extends Component {
         })
     }
 
-
-
     render(){  
 
         return (
             <div >   
-                <Nav/>
-
+                <Nav loginas={this.state.loginas}/>
                 <div className="border">
                 <Bio 
-                    firstname={this.state.firstname}
-                    lastname={this.state.lastname}
-                    user={this.state._id}
+                    firstname={this.state.user.firstname}
+                    lastname={this.state.user.lastname}
+                    user={this.state.user._id}
                     handleShow={this.handleShow}
-                    />
-                
+                    show={this.state.user._id === this.state.loginas._id}
+                />
                 {
-                    this.state.blogs.map( blog => {
+                    this.state.user.blogs.map( blog => {
                         return (
                             <Card style={
                                 { 
@@ -72,10 +64,10 @@ export default class User extends Component {
                                     marginBottom: 20
                                 }
                             } 
-                                key={this.state.blogs.indexOf(blog)}>
+                                key={this.state.user.blogs.indexOf(blog)}>
                                 <Card.Body>
                                     <img 
-                                        src= {require("./profile/default.png")} 
+                                        src= {require(`./profile/${this.state.user.profile}`)}
                                         className="img-thumbnail" 
                                         style={{width:50, 
                                             height:50, 
