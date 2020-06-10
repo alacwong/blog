@@ -17,7 +17,6 @@ export default class Bio extends Component{
     }
 
     uploadFile(){
-      console.log(this.state.file);
 
       let fd = new FormData();
       fd.append("image", this.state.file);
@@ -52,21 +51,21 @@ export default class Bio extends Component{
             const handleTitle = (e) => setTitle(e.target.value);
             const handleBody = (e) => setBody(e.target.value);
             const submit = () => {
-              const blog = {
-                user: props.user,
-                body: body,
-                title: title,
-              }
+                const blog = {
+                    user: props.user,
+                    body: body,
+                    title: title,
+                }
 
-              console.log(blog);
-              
-              axios.post('http://localhost:5000/blogger/blog', blog)
-                .then(() => console.log("Blog added successfully"))
-                .catch((res) => console.log(res));
-                setShow(false);
-                setBody("");
-                setTitle("");
-            }
+                console.log(blog);
+                
+                axios.post('http://localhost:5000/blogger/blog', blog)
+                    .then(() => console.log("Blog added successfully"))
+                    .catch((res) => console.log(res));
+                    setShow(false);
+                    setBody("");
+                    setTitle("");
+                }
           
             return (
               <>
@@ -113,11 +112,11 @@ export default class Bio extends Component{
                 <Card.Title>{this.props.firstname + " " + this.props.lastname}</Card.Title>
                 <Card.Text>Welcome to my blog page!</Card.Text>
                 <div>
-                  <img 
+                    <img 
                         src= {require("./profile/default.png")} 
                         className="img-thumbnail" 
                         style={{width:100, height:100, borderRadius: "100%"}}
-                  />
+                    />
                 </div>
                 {
                     this.props.show &&

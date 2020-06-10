@@ -11,8 +11,6 @@ export default class List extends Component{
             loginas: props.location.state.loginas,
             blogs_user: [],
         }
-        
-        console.log(this.state);
 
         //get users and blogs
         axios.get('http://localhost:5000/get/blogs')
@@ -76,7 +74,6 @@ export default class List extends Component{
                     )
                 }
             </div>
-
         );
     }
 }

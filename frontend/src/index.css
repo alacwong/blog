@@ -15,14 +15,11 @@ code {
 
 
 .mid-container{
-  /* background-color: aqua; */
   position:relative;
   width: 400px;
-  height: 400px;
-  /* display: inline-block; */
+  /* height: 400px; */
   margin: auto;
   text-align: center;
-  /* opacity: 0; */
   margin-top: 10%;
 
 }

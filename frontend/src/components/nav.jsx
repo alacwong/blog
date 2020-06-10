@@ -7,21 +7,16 @@ import { Link } from 'react-router-dom';
 
 export default class Navbar extends Component {
     constructor(props){
-      super(props);
-
-      console.log('nav', this.props);
-
-      if (props.loginas){
-        this.state = {
-          loginas: props.loginas
+    super(props);
+        if (props.loginas){
+                this.state = {
+                loginas: props.loginas
+            }
+        } else {
+            this.state = {
+                loginas: props.location.state.loginas
+            }
         }
-      } else {
-        this.state = {
-          loginas: props.location.state.loginas
-        }
-      }
-
-      console.log(this.state);
     }
     render() {
       return (
@@ -49,7 +44,7 @@ export default class Navbar extends Component {
                     <li className="navbar-item">  
                         <Link to=
                         {
-                        {
+                            {
                             pathname: '/blogs', 
                             state: this.state
                             }

@@ -34,6 +34,7 @@ export default class Login extends Component{
 
             render_acc: true,
             render_dialog: false,
+            render_dialog2: false
         }
     }
 
@@ -87,6 +88,9 @@ export default class Login extends Component{
         })
         .catch(err => {
             console.log(`Error: ${err}`);
+            this.setState({
+                render_dialog2: true
+            });
         })
 
         event.stopPropagation();
@@ -107,7 +111,7 @@ export default class Login extends Component{
             axios.post('http://localhost:5000/add', user)
                 .then(res =>{
                     this.props.history.push("/user/" + res.data.username, {
-                        state: res.data
+                        state: {user: res.data, loginas: res.data}
                     });
                 })
                 .catch(err => {
@@ -172,29 +176,54 @@ export default class Login extends Component{
     render(){
         return (
             <div >
-                {
+                {   
                     this.state.render_acc ? 
-                    <LoginBox
-                        user={this.usernameChange} 
-                        pass={this.passwordChange}
-                        submit={this.onSubmit}
-                        create={this.create}
-                    /> :
-                    <CreateAccount
-                        user={this.createUserChange}
-                        pass={this.createPassChange}
-                        pass2={this.createPass2Change}
-                        firstname={this.createFirstChange}
-                        lastname={this.createLastnameChange}
-                        submit={this.createAccount}
-                        url={this.state.url}
-                    />
+                    <div>
+                        <LoginBox
+                            user={this.usernameChange} 
+                            pass={this.passwordChange}
+                            submit={this.onSubmit}
+                            create={this.create}
+                        />
+                        {
+                            this.state.render_dialog2 &&
+                            <p style=
+                                {{
+                                    color: "red", 
+                                    textAlign: 'center'
+                                }}>
+                            * Password Username combination does not exist
+                            </p>
+                        }                         
+                    </div>
+                    :
+                    <div>
+                        <CreateAccount
+                            user={this.createUserChange}
+                            pass={this.createPassChange}
+                            pass2={this.createPass2Change}
+                            firstname={this.createFirstChange}
+                            lastname={this.createLastnameChange}
+                            submit={this.createAccount}
+                            url={this.state.url}
+                        />
+                        {
+                            this.state.render_dialog && 
+                            <p style=
+                                {{
+                                    color: "red",
+                                    textAlign: 'center'
+                                }}>
+                                * Passwords are not matching
+                            </p>
+                        }
+                        
+                    </div>
+
                 }
 
-                {
-                    this.state.render_dialog && 
-                        <p style={{color: "red"}}>* Passwords are not matching</p>
-                }
+
+
             </div>
             
         );
