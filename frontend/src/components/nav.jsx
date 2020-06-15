@@ -13,6 +13,7 @@ export default class Navbar extends Component {
                 loginas: props.loginas
             }
         } else {
+            console.log(props);
             this.state = {
                 loginas: props.location.state.loginas
             }

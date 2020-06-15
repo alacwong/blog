@@ -7,13 +7,46 @@ import Nav from '../components/nav'
 import Card from 'react-bootstrap/Card'
 import Bio from '../components/Bio'
 import axios from 'axios';
+import avatar from './profile/default.png'
 
 export default class User extends Component {
     constructor(props){
         super(props);
-        this.state = {...this.props.location.state};    //user page
-        this.state.blogData = {}
+        this.updateUser = this.updateUser.bind(this);
+        this.updateBlogs = this.updateBlogs.bind(this);
+        this.updateImage = this.updateImage.bind(this);
+        this.state = {...props.location.state};    //user page
+        this.state.blogData = {}  
+        this.state.image = avatar;      
+        this.updateBlogs();
+        this.updateImage();
+    }
 
+
+
+    updateUser(user){
+
+    }
+
+    updateImage(){
+        axios.get('http://localhost:5000/get/profile', {
+            params: {_id: this.state.user.profile}
+    })
+            .then(res => {
+                console.log(res);
+                const [file, chunks] = [res.data.file, res.data.chunks];
+                chunks.sort((a,b) => a.n - b.n);
+                let imageData = chunks.reduce((acc, cur) => {
+                   return acc + cur.data;
+                }, '');
+                const src = `data:${file.contentType};base64,${imageData}`;
+                this.setState({
+                    image: src
+                })
+            })
+    }
+
+    updateBlogs(){
         const loading = {
             user: "loading...",
             body: "loading...",
@@ -40,18 +73,21 @@ export default class User extends Component {
         })
     }
 
-    render(){  
 
+    render(){
+          
         return (
+            
             <div >   
                 <Nav loginas={this.state.loginas}/>
                 <div className="border">
                     <Bio 
-                        firstname={this.state.user.firstname}
-                        lastname={this.state.user.lastname}
-                        user={this.state.user._id}
-                        handleShow={this.handleShow}
+                        user={this.state.user}
                         show={this.state.user._id === this.state.loginas._id}
+                        updateUser={this.updateUser}
+                        updateImage={this.updateImage}
+                        updateBlog={this.updateBlogs}
+                        image={this.state.image}
                     />
                     {
                         this.state.user.blogs.map( blog => {
@@ -65,8 +101,8 @@ export default class User extends Component {
                                 } 
                                     key={this.state.user.blogs.indexOf(blog)}>
                                     <Card.Body>
-                                        <img 
-                                            src= {require(`./profile/${this.state.user.profile}`)}
+                                        <img
+                                            src= {this.state.image}
                                             className="img-thumbnail" 
                                             style=
                                                 {{
