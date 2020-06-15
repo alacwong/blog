@@ -1,20 +1,22 @@
 const router = require("express").Router();
 let User  = require("../models/User");
+
 /**
  * Add user to datavase
  */
 router.route("/add").post((req, res) =>{
+    const defaultProfileID = '5ee69b33ad66c928bcdf38f3'
     const newUser = new User({
         username: req.body.username,
         password: req.body.password, 
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        profile: "../../profile/default.png",
+        profile: defaultProfileID,
         blogs: []
     })   
    
     newUser.save()
-        .then(() => res.json(newUser))
+        .then((user) => res.json(user))
         .catch(err => res.status(400).json(`Error ${err}`));
 });
 
@@ -23,19 +25,11 @@ router.route("/add").post((req, res) =>{
  */
 router.route("/auth").get((req, res) =>{
 
-    //INSOMNIA TEST
-    // User.findOne({
-    //     username: req.body.username,
-    //     password: req.body.password
-    // }).then(user => res.json(user))
-    //   .catch(err => res.status(400).json(`Error: ${err}`));
-
     console.log(req.query);
     User.findOne(req.query)
         .then(user => res.json(user))
-        .catch(err => console.log(err));
+        .catch(err => res.status(400).json(`Error: ${err}`));
 
-    // console.log(res);
 })
 
 
@@ -56,6 +50,10 @@ router.route("/get").get((req, res) =>{
     
 
 });
-module.exports = router;
 
+
+
+
+
+module.exports = router;
 router.route
