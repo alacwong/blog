@@ -47,7 +47,7 @@ export default class List extends Component{
                                     <Card.Body>
                                         <h6>{user.username}</h6>
                                         <img 
-                                            src= {require("./profile/default.png")} 
+                                            src= {require(`./profile/${user.profile}`)} 
                                             className="img-thumbnail" 
                                             style={{width:50, 
                                                 height:50, 

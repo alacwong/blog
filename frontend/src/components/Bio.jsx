@@ -12,21 +12,27 @@ export default class Bio extends Component{
         this.uploadFile = this.uploadFile.bind(this);
         this.browseFile = this.browseFile.bind(this);
         this.state = {
-            file: null
+            file: null,
         }
     }
 
-    uploadFile(){
+    uploadFile(event){
 
-      let fd = new FormData();
-      fd.append("image", this.state.file);
-      fd.append('user', this.props.user);
-      axios.post('http://localhost:5000/save/profile', fd, {headers:{'Content-Type': 'multipart/form-data'}})
-        .then(res => {
-          console.log(res);
-        }).catch( res => {
-          console.log(res);
-        });
+        event.stopPropagation();
+        event.preventDefault();
+        let fd = new FormData();
+        fd.append("image", this.state.file);
+        fd.append('user', this.props.user._id);
+        console.log(event);
+        
+        axios.post('http://localhost:5000/save/profile', fd, {headers:{'Content-Type': 'multipart/form-data'}})
+            .then(res => {
+               console.log(res);
+            }).catch( err => {
+            console.log(err);
+            });
+
+        
     }
 
     browseFile(e){
@@ -52,7 +58,7 @@ export default class Bio extends Component{
             const handleBody = (e) => setBody(e.target.value);
             const submit = () => {
                 const blog = {
-                    user: props.user,
+                    user: props.user._id,
                     body: body,
                     title: title,
                 }
@@ -60,8 +66,13 @@ export default class Bio extends Component{
                 console.log(blog);
                 
                 axios.post('http://localhost:5000/blogger/blog', blog)
-                    .then(() => console.log("Blog added successfully"))
-                    .catch((res) => console.log(res));
+                    .then(res =>{
+                        res.json('success');
+                        //reload user
+                        axios.post('http://localhost:5000/get/user', {id: props.user})
+                            .then(user => this.props.updateUser(user));
+                    })
+                    .catch(err => console.log(err));
                     setShow(false);
                     setBody("");
                     setTitle("");
@@ -91,7 +102,7 @@ export default class Bio extends Component{
                     </Modal.Body>
                     <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={submit}>Save Changes</Button>
+                    <Button variant="primary" onClick={submit}>Upload</Button>
                     </Modal.Footer>
                 </Modal>
               </>
@@ -109,11 +120,11 @@ export default class Bio extends Component{
                 }
             }>
             <Card.Body>
-                <Card.Title>{this.props.firstname + " " + this.props.lastname}</Card.Title>
+                <Card.Title>{this.props.user.firstname + " " + this.props.user.lastname}</Card.Title>
                 <Card.Text>Welcome to my blog page!</Card.Text>
                 <div>
                     <img 
-                        src= {require("./profile/default.png")} 
+                         src= {this.props.image}
                         className="img-thumbnail" 
                         style={{width:100, height:100, borderRadius: "100%"}}
                     />

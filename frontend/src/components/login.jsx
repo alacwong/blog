@@ -6,6 +6,7 @@ import axios from 'axios';
 export default class Login extends Component{
     constructor(props){
         super(props);
+        
         this.usernameChange = this.usernameChange.bind(this);
         this.passwordChange = this.passwordChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -30,8 +31,7 @@ export default class Login extends Component{
                 firstname: "",
                 lastname: "",
             },
-
-
+            
             render_acc: true,
             render_dialog: false,
             render_dialog2: false
@@ -92,10 +92,8 @@ export default class Login extends Component{
                 render_dialog2: true
             });
         })
-
         event.stopPropagation();
         event.preventDefault();
-
     }
 
     /**
@@ -110,7 +108,8 @@ export default class Login extends Component{
             delete user.password2
             axios.post('http://localhost:5000/add', user)
                 .then(res =>{
-                    this.props.history.push("/user/" + res.data.username, {
+                    this.props.history.push( {
+                        pathname: "/user/" + res.data.username,
                         state: {user: res.data, loginas: res.data}
                     });
                 })
@@ -127,7 +126,6 @@ export default class Login extends Component{
         event.stopPropagation();
         event.preventDefault();
     }
-
 
     /**
      * Following methods for updating account creaiton details
@@ -217,15 +215,9 @@ export default class Login extends Component{
                                 * Passwords are not matching
                             </p>
                         }
-                        
                     </div>
-
                 }
-
-
-
             </div>
-            
         );
     }
 }
