@@ -6,66 +6,22 @@ import React, {Component}  from "react";
 import Nav from '../components/nav'
 import Card from 'react-bootstrap/Card'
 import Bio from '../components/Bio'
-import axios from 'axios';
 import avatar from './profile/default.png'
-import {format} from '../Util'
+import {updateUserBlogs, updateProfile} from '../Util'
 
 export default class User extends Component {
     constructor(props){
         super(props);
-        this.updateUser = this.updateUser.bind(this);
-        this.updateBlogs = this.updateBlogs.bind(this);
-        this.updateImage = this.updateImage.bind(this);
         this.state = {...props.location.state};    //user page
-        this.state.blogData = {}  
-        this.state.image = avatar;      
-        this.updateBlogs();
-        this.updateImage();
-    }
+        this.state.blogs = []
 
-
-
-    updateUser(user){
-
-    }
-
-    updateImage(){
-        axios.get('http://localhost:5000/get/profile', {
-            params: {_id: this.state.user.profile}
-        })
-            .then(res => {
-                const src = format(res);
-                this.setState({
-                    image: src
-                })
-            })
-    }
-
-    updateBlogs(){
-        const loading = {
-            user: "loading...",
-            body: "loading...",
-            likes: 0,
-            title: "loading",
-            comments: []
+        updateUserBlogs(this);
+        if (this.state.user.profile.length > 100){
+            this.state.image = this.state.user.profile;
+        } else {
+            this.state.image = avatar; 
+            updateProfile(this);
         }
-
-        this.state.user.blogs.map(blog => {
-            //to prevent crashes
-            this.state.blogData[blog] = loading;
-            axios.get('http://localhost:5000/get/blog', {
-                params: {id: blog}
-            })
-                .then(res => {
-                    const newBlog = {...this.state.blogData}
-                    console.log(res.data);
-                    newBlog[res.data._id] = res.data;
-                    this.setState({
-                        blogData: newBlog
-                    });
-                }
-            )
-        })
     }
 
 
@@ -79,13 +35,12 @@ export default class User extends Component {
                     <Bio 
                         user={this.state.user}
                         show={this.state.user._id === this.state.loginas._id}
-                        updateUser={this.updateUser}
-                        updateImage={this.updateImage}
-                        updateBlog={this.updateBlogs}
+                        component={this}
                         image={this.state.image}
                     />
                     {
-                        this.state.user.blogs.map( blog => {
+                        this.state.blogs.map( blog => {
+                            console.log(blog)
                             return (
                                 <Card style={
                                     { 
@@ -107,9 +62,9 @@ export default class User extends Component {
                                                     marginBottom: "4px"
                                                 }}
                                         />
-                                        <Card.Title>{this.state.blogData[blog].title}</Card.Title>
+                                        <Card.Title>{blog.title}</Card.Title>
                                         <Card.Text>
-                                            {this.state.blogData[blog].body}
+                                            {blog.body}
                                         </Card.Text>
                                         <Card.Link href="#">View User</Card.Link>
                                     </Card.Body>

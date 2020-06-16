@@ -2,7 +2,7 @@ import React, {Component}from "react";
 import Nav from '../components/nav'
 import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom';
-import {updateUser} from '../Util'
+import {updateUsers} from '../Util'
 
 export default class List extends Component{
     constructor(props){
@@ -11,10 +11,8 @@ export default class List extends Component{
             loginas: props.location.state.loginas,
             users: [],
         }
-        updateUser(this);
+        updateUsers(this);
     }
-
- 
 
     render(){
         return (

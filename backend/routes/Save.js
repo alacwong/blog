@@ -30,7 +30,7 @@ const storage = new GridFsStorage({
             user.profile = req.file.id;
             user.save()
                .then(() => {
-                  res.json(`User: ${user.username} profile updated to ${user.profile}`);
+                  res.json(user);
                })
                .catch((err) => res.json(`failure ${err}`));
          })

@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { updateUser, updateProfile, updateUserBlogs} from '../Util'
 
 export default class Bio extends Component{
     constructor(props){
@@ -27,7 +28,7 @@ export default class Bio extends Component{
         
         axios.post('http://localhost:5000/save/profile', fd, {headers:{'Content-Type': 'multipart/form-data'}})
             .then(res => {
-               console.log(res);
+                updateUser(this.props.component, res.data, updateProfile);
             }).catch( err => {
             console.log(err);
             });
@@ -70,7 +71,7 @@ export default class Bio extends Component{
                         res.json('success');
                         //reload user
                         axios.post('http://localhost:5000/get/user', {id: props.user})
-                            .then(user => this.props.updateUser(user));
+                            .then(user => updateUser(this.props.component, user, updateUserBlogs));
                     })
                     .catch(err => console.log(err));
                     setShow(false);

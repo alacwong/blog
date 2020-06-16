@@ -12,7 +12,7 @@ export const format = (res) => {
     return `data:${file.contentType};base64,${imageData}`;
 }
 
-export function updateUser(component){
+export function updateUsers(component){
 
     return new Promise( (resolve, reject) => {
         axios.get('http://localhost:5000/get')
@@ -43,9 +43,8 @@ export function updateUser(component){
    
 }
 
-
 export function updateBlogs(component){
-    updateUser(component)
+    updateUsers(component)
         .then(() => {
             axios.get('http://localhost:5000/get/blogs')
                 .then(res => {
@@ -56,4 +55,40 @@ export function updateBlogs(component){
                 })
         })
 
+}
+
+export function updateProfile(component){
+    axios.get('http://localhost:5000/get/profile', {
+        params: {_id: component.state.user.profile}
+    })
+        .then(res => {
+            const src = format(res);
+            component.setState({
+                image: src
+            })
+        })
+}
+
+export function updateUser(component, user, cb){
+    component.setState({
+        user: user
+    })
+    cb(component);
+}
+
+export function updateUserBlogs(component){
+
+    let blogs = component.state.user.blogs.map(blog => {
+        return axios.get('http://localhost:5000/get/blog', {
+            params: {id: blog}
+        })
+    })
+    Promise.all(blogs)
+        .then(resolved => {
+            blogs = resolved.map(resolve => resolve.data);
+            component.setState({
+                blogs: blogs
+            })
+            console.log(component.state.blogs);
+        })
 }
