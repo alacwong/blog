@@ -6,9 +6,7 @@ const Grid = require('gridfs-stream');
 const mongoUtil = require("../mongoUtil");
 const { ObjectID } = require("bson");
 const connection = mongoUtil.getConnection();
-const getData = async () => {
 
-}
 
 router.route("/blog").get((req, res) => {
     console.log(req.query);
@@ -21,15 +19,7 @@ router.route("/blog").get((req, res) => {
 router.route("/blogs").get((req, res) => {
     Blog.find({})
         .then(blogs => {
-            users = blogs.map(blog => User.findById(blog.user))
-            Promise.all(users)
-                .then(resolved => {
-                    const result = []
-                    for (let i =0; i < resolved.length; i++){
-                        result.push([blogs[i], resolved[i]]);
-                    }
-                    res.json(result);
-                })
+            res.json(blogs);
         })
 })
 
@@ -81,8 +71,6 @@ router.route('/profile').get((req, res) => {
     });
 
 })
-
-
 
 module.exports = router;
 

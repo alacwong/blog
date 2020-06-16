@@ -1,9 +1,8 @@
 import React, {Component}from "react";
 import Nav from '../components/nav'
 import Card from 'react-bootstrap/Card'
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-import avatar from './profile/default.png'
+import {updateUser} from '../Util'
 
 export default class List extends Component{
     constructor(props){
@@ -11,32 +10,12 @@ export default class List extends Component{
         this.state = {
             loginas: props.location.state.loginas,
             users: [],
-
         }
-        
-        console.log(this.state);
-        axios.get('http://localhost:5000/get')
-            .then( res => {
-                const users = res.data.map(user => {
-                    user.profile = avatar;
-                    return user;
-                });
-                this.setState({
-                    users: users
-                })
-                //update user profiless
-
-            })
+        updateUser(this);
     }
 
+ 
 
-    update(){
-        axios.get('http://localhost:5000/get')
-            .then(res => {
-                const users = res.data;
-        
-            })
-    }
     render(){
         return (
             <div>
@@ -54,8 +33,8 @@ export default class List extends Component{
                             }
                             key = {this.state.users.indexOf(user)}>
                                 <Card.Body>
-                                     <img 
-                                        src= {avatar} 
+                                     <img       
+                                        src= {user.profile} 
                                         className="img-thumbnail" 
                                         style={{
                                             width:50, 

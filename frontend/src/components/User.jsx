@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card'
 import Bio from '../components/Bio'
 import axios from 'axios';
 import avatar from './profile/default.png'
+import {format} from '../Util'
 
 export default class User extends Component {
     constructor(props){
@@ -31,15 +32,9 @@ export default class User extends Component {
     updateImage(){
         axios.get('http://localhost:5000/get/profile', {
             params: {_id: this.state.user.profile}
-    })
+        })
             .then(res => {
-                console.log(res);
-                const [file, chunks] = [res.data.file, res.data.chunks];
-                chunks.sort((a,b) => a.n - b.n);
-                let imageData = chunks.reduce((acc, cur) => {
-                   return acc + cur.data;
-                }, '');
-                const src = `data:${file.contentType};base64,${imageData}`;
+                const src = format(res);
                 this.setState({
                     image: src
                 })

@@ -3,23 +3,19 @@ import Nav from '../components/nav'
 import Card from 'react-bootstrap/Card'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import {updateBlogs} from '../Util';
 
 export default class List extends Component{
     constructor(props){
         super(props);
         this.state = {
             loginas: props.location.state.loginas,
-            blogs_user: [],
+            blogs: [],
+            users: []
         }
 
         //get users and blogs
-        axios.get('http://localhost:5000/get/blogs')
-            .then( res => {
-                const blogs_user = res.data.sort((a, b) => a.createdAt - b.createdAt);
-                this.setState({
-                    blogs_user: blogs_user
-                })
-            });
+        updateBlogs(this);
     
     }
 
@@ -31,11 +27,11 @@ export default class List extends Component{
                <Nav loginas={this.state.loginas}/>
 
                 {
-                    this.state.blogs_user.map(
-                        blogs_user => {
-                            let [blog, user] = blogs_user
+                    this.state.blogs.map(
+                        blog => {
+                            let user = this.state.users.find(user => user._id === blog.user);
                             return (
-
+                            
                                 <Card style={
                                     { 
                                         width: '32rem',
@@ -43,11 +39,11 @@ export default class List extends Component{
                                         marginBottom: 20
                                     }
                                 } 
-                                    key={this.state.blogs_user.indexOf(blogs_user)}>
+                                    key={this.state.blogs.indexOf(blog)}>
                                     <Card.Body>
                                         <h6>{user.username}</h6>
                                         <img 
-                                            src= {require(`./profile/${user.profile}`)} 
+                                            src= {user.profile} 
                                             className="img-thumbnail" 
                                             style={{width:50, 
                                                 height:50, 
