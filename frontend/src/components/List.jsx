@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom';
 import {updateUsers} from '../Util'
 
+
 export default class List extends Component{
     constructor(props){
         super(props);
@@ -32,7 +33,7 @@ export default class List extends Component{
                             key = {this.state.users.indexOf(user)}>
                                 <Card.Body>
                                      <img       
-                                        src= {user.profile} 
+                                        src= {user.image} 
                                         className="img-thumbnail" 
                                         style={{
                                             width:50, 

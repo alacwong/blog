@@ -26,10 +26,10 @@ export default class Bio extends Component{
         fd.append('user', this.props.user._id);
         
         axios.post('http://localhost:5000/save/profile', fd, {headers:{'Content-Type': 'multipart/form-data'}})
-            .then( () => {
-                updateProfile(this.props.component, this.props.user)
+            .then(res => {
+                updateProfile(this.props.component, res.data)
             }).catch( err => {
-            console.log(err);
+                console.log(err);
             });
     }
 

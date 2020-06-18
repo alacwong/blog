@@ -36,7 +36,7 @@ export default class User extends Component {
                         user={this.state.user}
                         show={this.state.user._id === this.state.loginas._id}
                         component={this}
-                        image={this.state.image}
+                        image={this.state.user.image}
                     />
                     {
                         this.state.blogs.map( blog => {
@@ -51,7 +51,7 @@ export default class User extends Component {
                                     key={this.state.user.blogs.indexOf(blog)}>
                                     <Card.Body>
                                         <img
-                                            src= {this.state.image}
+                                            src= {this.state.user.image}
                                             className="img-thumbnail" 
                                             style=
                                                 {{

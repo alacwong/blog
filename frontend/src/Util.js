@@ -28,7 +28,7 @@ export function updateUsers(component){
                     resolved.forEach(resolve => {
                         const file = resolve.data.file;
                         users[res.data.findIndex(user => user.profile === file._id)]
-                            .profile = format(resolve);
+                            .image = format(resolve);
                     })
                     component.setState({
                         users: users
@@ -61,9 +61,9 @@ export function updateProfile(component, user){
         params: {_id: user.profile}
     })
         .then(res => {
-            const src = format(res);
+           user.image = format(res);
+           console.log(user);
             component.setState({
-                image: src,
                 user: user
             })
         })

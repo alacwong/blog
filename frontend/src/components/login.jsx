@@ -2,6 +2,7 @@ import React, {Component}from "react";
 import LoginBox from "./SignIn"
 import CreateAccount from "./CreateAccount";
 import axios from 'axios';
+import avatar from './profile/default.png'
 
 export default class Login extends Component{
     constructor(props){
@@ -80,10 +81,10 @@ export default class Login extends Component{
             params: this.state.userAuth
         })
         .then(res =>  {
-           userAccount = res.data;
+           userAccount = {...res.data, image: avatar};
            this.props.history.push( {
                pathname: "/user/" + res.data.username,
-               state: {user: res.data, loginas: res.data}
+               state: {user: userAccount, loginas: userAccount}
            });
         })
         .catch(err => {
@@ -108,9 +109,10 @@ export default class Login extends Component{
             delete user.password2
             axios.post('http://localhost:5000/add', user)
                 .then(res =>{
+                    let userAccount = {...res.data, image: avatar}
                     this.props.history.push( {
                         pathname: "/user/" + res.data.username,
-                        state: {user: res.data, loginas: res.data}
+                        state: {user: userAccount, loginas: userAccount}
                     });
                 })
                 .catch(err => {

@@ -27,11 +27,9 @@ const storage = new GridFsStorage({
       if (req.file){
          User.findById(req.body.user)
          .then(user => {
-            console.log(user);
             user.profile = req.file.id;
             user.save()
                .then(() => {
-                  console.log(user);
                   res.json(user);
                })
                .catch((err) => res.json(`failure ${err}`));
