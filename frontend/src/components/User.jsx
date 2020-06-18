@@ -15,12 +15,12 @@ export default class User extends Component {
         this.state = {...props.location.state};    //user page
         this.state.blogs = []
 
-        updateUserBlogs(this);
+        updateUserBlogs(this, this.state.user);
         if (this.state.user.profile.length > 100){
             this.state.image = this.state.user.profile;
         } else {
             this.state.image = avatar; 
-            updateProfile(this);
+            updateProfile(this, this.state.user);
         }
     }
 
@@ -40,7 +40,6 @@ export default class User extends Component {
                     />
                     {
                         this.state.blogs.map( blog => {
-                            console.log(blog)
                             return (
                                 <Card style={
                                     { 

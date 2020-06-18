@@ -1,6 +1,5 @@
 
 import axios from 'axios';
-import avatar from './components/profile/default.png'
 
 export const format = (res) => {
     //return formatted string for image parsing
@@ -54,31 +53,28 @@ export function updateBlogs(component){
                     })
                 })
         })
-
 }
 
-export function updateProfile(component){
+export function updateProfile(component, user){
+    console.log(user);
     axios.get('http://localhost:5000/get/profile', {
-        params: {_id: component.state.user.profile}
+        params: {_id: user.profile}
     })
         .then(res => {
             const src = format(res);
             component.setState({
-                image: src
+                image: src,
+                user: user
             })
         })
 }
 
-export function updateUser(component, user, cb){
-    component.setState({
-        user: user
-    })
-    cb(component);
-}
 
-export function updateUserBlogs(component){
+export function updateUserBlogs(component, user){
 
-    let blogs = component.state.user.blogs.map(blog => {
+    console.log('user', user);
+    console.log('component', component)
+    let blogs = user.blogs.map(blog => {
         return axios.get('http://localhost:5000/get/blog', {
             params: {id: blog}
         })
@@ -87,8 +83,9 @@ export function updateUserBlogs(component){
         .then(resolved => {
             blogs = resolved.map(resolve => resolve.data);
             component.setState({
-                blogs: blogs
+                blogs: blogs,
+                user: user
             })
-            console.log(component.state.blogs);
+            
         })
 }

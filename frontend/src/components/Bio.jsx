@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { updateUser, updateProfile, updateUserBlogs} from '../Util'
+import {  updateProfile, updateUserBlogs} from '../Util'
 
 export default class Bio extends Component{
     constructor(props){
@@ -24,16 +24,13 @@ export default class Bio extends Component{
         let fd = new FormData();
         fd.append("image", this.state.file);
         fd.append('user', this.props.user._id);
-        console.log(event);
         
         axios.post('http://localhost:5000/save/profile', fd, {headers:{'Content-Type': 'multipart/form-data'}})
-            .then(res => {
-                updateUser(this.props.component, res.data, updateProfile);
+            .then( () => {
+                updateProfile(this.props.component, this.props.user)
             }).catch( err => {
             console.log(err);
             });
-
-        
     }
 
     browseFile(e){
@@ -63,15 +60,13 @@ export default class Bio extends Component{
                     body: body,
                     title: title,
                 }
-
                 console.log(blog);
-                
                 axios.post('http://localhost:5000/blogger/blog', blog)
-                    .then(res =>{
-                        res.json('success');
+                    .then( () =>{
                         //reload user
-                        axios.post('http://localhost:5000/get/user', {id: props.user})
-                            .then(user => updateUser(this.props.component, user, updateUserBlogs));
+                        console.log(props.user)
+                        axios.get('http://localhost:5000/get/user', {params:{id: props.user}})
+                            .then(response => updateUserBlogs(props.component, response.data));
                     })
                     .catch(err => console.log(err));
                     setShow(false);
@@ -144,7 +139,7 @@ export default class Bio extends Component{
             {
                 this.props.show &&
                 <div>
-                    <Example user={this.props.user}/>
+                    <Example user={this.props.user._id} component={this.props.component}/>
                 </div>              
             }
             </Card>

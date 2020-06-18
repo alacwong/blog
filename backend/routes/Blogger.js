@@ -3,14 +3,6 @@ const User = require("../models/User");
 const Blog = require("../models/blog");
 const Comment = require("../models/comment");
 
-const updateUser = (userId, blogId) =>{
-    User.findById(userId)
-        .then(user => {
-            user.blogs.push(blogId)
-            user.save();
-            console.log('User has been saved')
-        });
-}
 
 const updateBlog = (blogId, commentId) =>{
     Blog.findById(blogId)
@@ -36,7 +28,7 @@ const updateComment = (commentId, replyId) => {
 
 router.route("/blog").post((req, res) =>{
     console.log("attempting to blog...")
-    console.log()
+    console.log(req.body);
     const newBlog = new Blog({
         user: req.body.user,
         body: req.body.body,
@@ -47,8 +39,13 @@ router.route("/blog").post((req, res) =>{
 
     newBlog.save()
         .then(blog => {
-            updateUser(blog.user, blog._id)
-            res.json("Blog added");
+            User.findById(blog.user)
+                .then(user => {
+                    user.blogs.push(blog._id)
+                    user.save();
+                    res.json('blog added')
+                })
+                .catch(err => res.status(400).json(`Error: ${err}`));
         })
         .catch(err => res.status(400).json(`Error: ${err}`));
 });

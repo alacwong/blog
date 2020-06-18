@@ -25,7 +25,8 @@ router.route("/blogs").get((req, res) => {
 
 
 router.route('/user').get((req, res) => {
-    User.findById(req.body.id)
+    console.log(req.body);
+    User.findById(req.query.id)
         .then(user => res.json(user))
         .catch(err => res.status(400).json('Error ' + err));
 })
@@ -36,7 +37,7 @@ router.route('/profile').get((req, res) => {
 
     let send = 0
     let response = {}
-
+    console.log(req.query);
     console.log('*****************************************************');
 
     const respond = (err, result, type) => {
