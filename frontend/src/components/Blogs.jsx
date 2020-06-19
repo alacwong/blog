@@ -1,7 +1,6 @@
 import React, {Component}from "react";
 import Nav from '../components/nav'
 import Card from 'react-bootstrap/Card'
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {updateBlogs} from '../Util';
 
@@ -43,7 +42,7 @@ export default class List extends Component{
                                     <Card.Body>
                                         <h6>{user.username}</h6>
                                         <img 
-                                            src= {user.profile} 
+                                            src= {user.image} 
                                             className="img-thumbnail" 
                                             style={{width:50, 
                                                 height:50, 

@@ -22,14 +22,6 @@ export default class Navbar extends Component {
     render() {
       return (
         <nav className="navbar navbar-dark bg-dark navbar-expand-lg" style={{opacity: "85%"}}>
-          <Link to=
-            {
-              {
-                pathname: `/user/${this.state.loginas.username}`, 
-                state: {user: this.state.loginas, loginas: this.state.loginas}
-              }
-            } 
-        className="navbar-brand">Your profile</Link>
             <div className="collpase navbar-collapse">
                 <ul className="navbar-nav mr-auto">
                     <li className="navbar-item">

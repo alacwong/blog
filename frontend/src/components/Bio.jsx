@@ -56,7 +56,7 @@ export default class Bio extends Component{
             const handleBody = (e) => setBody(e.target.value);
             const submit = () => {
                 const blog = {
-                    user: props.user._id,
+                    user: props.user,
                     body: body,
                     title: title,
                 }

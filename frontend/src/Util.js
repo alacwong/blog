@@ -72,8 +72,6 @@ export function updateProfile(component, user){
 
 export function updateUserBlogs(component, user){
 
-    console.log('user', user);
-    console.log('component', component)
     let blogs = user.blogs.map(blog => {
         return axios.get('http://localhost:5000/get/blog', {
             params: {id: blog}
@@ -85,7 +83,7 @@ export function updateUserBlogs(component, user){
             component.setState({
                 blogs: blogs,
                 user: user
-            })
+            },updateProfile(component, user) )
             
         })
 }
